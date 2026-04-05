@@ -12,10 +12,14 @@ final class FeedViewModel: ObservableObject {
     
     @Published var feedItems: [FeedItem] = []
     @Published var errorMessage: String?
+    @Published var isLoading = false
     
     let apiClient = ApiClient()
     
     func loadData() async {
+        isLoading = true
+        errorMessage = nil
+        
         async let users = apiClient.fetchUsers()
         async let posts = apiClient.fetchPosts()
         
@@ -25,6 +29,8 @@ final class FeedViewModel: ObservableObject {
         } catch {
             errorMessage = "Failed to load feed"
         }
+        
+        isLoading = false
     }
     
     private func mapFeedItems(posts: [Post], users: [User]) -> [FeedItem] {

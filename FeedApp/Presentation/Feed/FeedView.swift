@@ -16,8 +16,26 @@ struct FeedView: View {
     }
     
     var body: some View {
-        List(viewModel.feedItems) { item in
-            FeedCellView(item: item)
+        Group {
+            if viewModel.isLoading && viewModel.feedItems.isEmpty {
+                ProgressView("Loading...")
+            } else if let errorMessage = viewModel.errorMessage,
+                      viewModel.feedItems.isEmpty {
+                VStack(spacing: 12) {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                    
+                    Button("Retry") {
+                        Task {
+                            await viewModel.loadData()
+                        }
+                    }
+                }
+            } else {
+                List(viewModel.feedItems) { item in
+                    FeedCellView(item: item)
+                }
+            }
         }
         .task {
             await viewModel.loadData()
