@@ -18,7 +18,7 @@ final class ApiClient {
         return try JSONDecoder().decode([User].self, from: users)
     }
     
-    func fetchPists() async throws -> [Post] {
+    func fetchPosts() async throws -> [Post] {
         guard let url = URL(string: ApiClient.postsUrl) else { return [] }
         let (posts, _) = try await URLSession.shared.data(from: url)
         return try JSONDecoder().decode([Post].self, from: posts)
