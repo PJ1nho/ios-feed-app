@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 final class DetailsViewModel: ObservableObject {
     
     @Published var comments: [Comment] = []
@@ -15,9 +16,9 @@ final class DetailsViewModel: ObservableObject {
     @Published var isLoading = false
     
     let feedItem: FeedItem
-    private let apiClient: ApiClient
+    private let apiClient: ApiClientProtocol
     
-    init(feedItem: FeedItem, apiClient: ApiClient) {
+    init(feedItem: FeedItem, apiClient: ApiClientProtocol) {
         self.feedItem = feedItem
         self.apiClient = apiClient
     }

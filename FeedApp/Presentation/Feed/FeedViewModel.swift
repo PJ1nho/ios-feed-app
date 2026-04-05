@@ -15,11 +15,9 @@ final class FeedViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isLoading = false
     
-    var onSelectItem: ((FeedItem) -> Void)?
+    private let apiClient: ApiClientProtocol
     
-    private let apiClient: ApiClient
-    
-    init(apiClient: ApiClient) {
+    init(apiClient: ApiClientProtocol) {
         self.apiClient = apiClient
     }
     

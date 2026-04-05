@@ -36,17 +36,16 @@ struct RemoteImageView: View {
     private func loadImage() async {
         image = nil
         isLoading = true
-        
+        defer { isLoading = false }
+
         guard let url else { return }
-        
+
         do {
             let loadedImage = try await ImageLoader.shared.load(from: url)
             image = loadedImage
         } catch {
             image = nil
         }
-        
-        isLoading = false
     }
 }
 

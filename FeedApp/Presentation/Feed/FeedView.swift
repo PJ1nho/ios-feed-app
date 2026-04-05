@@ -10,9 +10,11 @@ import SwiftUI
 struct FeedView: View {
     
     @ObservedObject private var viewModel: FeedViewModel
+    private let onSelectItem: (FeedItem) -> Void
     
-    init(viewModel: FeedViewModel) {
+    init(viewModel: FeedViewModel, onSelectItem: @escaping (FeedItem) -> Void) {
         self.viewModel = viewModel
+        self.onSelectItem = onSelectItem
     }
     
     var body: some View {
@@ -35,7 +37,7 @@ struct FeedView: View {
                 List(viewModel.feedItems) { item in
                     FeedCellView(item: item)
                         .onTapGesture {
-                            viewModel.onSelectItem?(item)
+                            onSelectItem(item)
                         }
                 }
             }
@@ -50,5 +52,5 @@ struct FeedView: View {
 }
 
 #Preview {
-    FeedView(viewModel: FeedViewModel(apiClient: ApiClient()))
+    FeedView(viewModel: FeedViewModel(apiClient: ApiClient()), onSelectItem: { _ in })
 }

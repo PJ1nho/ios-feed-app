@@ -15,10 +15,10 @@ protocol Coordinator: AnyObject {
 final class AppCoordinator: Coordinator {
     let navigationController: UINavigationController
     
-    private let apiClient: ApiClient
+    private let apiClient: ApiClientProtocol
     
     init(navigationController: UINavigationController,
-         apiClient: ApiClient = ApiClient()) {
+         apiClient: ApiClientProtocol = ApiClient()) {
         self.navigationController = navigationController
         self.apiClient = apiClient
     }
@@ -29,12 +29,13 @@ final class AppCoordinator: Coordinator {
     
     private func showFeed() {
         let viewModel = FeedViewModel(apiClient: apiClient)
-        
-        viewModel.onSelectItem = { [weak self] item in
-            self?.showDetails(for: item)
-        }
-        
-        let viewController = FeedViewController(viewModel: viewModel)
+
+        let viewController = FeedViewController(
+            viewModel: viewModel,
+            onSelectItem: { [weak self] item in
+                self?.showDetails(for: item)
+            }
+        )
         navigationController.setViewControllers([viewController], animated: false)
     }
     
