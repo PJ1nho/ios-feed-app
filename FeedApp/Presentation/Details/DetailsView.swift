@@ -16,38 +16,53 @@ struct DetailsView: View {
     }
     
     var body: some View {
-        Group {
-            if viewModel.isLoading && viewModel.comments.isEmpty {
-                ProgressView("Loading comments...")
-            } else if let errorMessage = viewModel.errorMessage,
-                      viewModel.comments.isEmpty {
-                VStack(spacing: 12) {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                    
-                    Button("Retry") {
-                        Task {
-                            await viewModel.loadComments()
-                        }
-                    }
-                }
-            } else {
-                List {
-                    FeedCellView(item: viewModel.feedItem)
-                    
-                    Section("Comments") {
-                        ForEach(viewModel.comments) { comment in
-                            CommentCellView(comment: comment)
-                        }
-                    }
-                }
-            }
-        }
+        contentView()
         .task {
             await viewModel.loadComments()
         }
         .refreshable {
             await viewModel.loadComments()
+        }
+    }
+
+    @ViewBuilder
+    private func contentView() -> some View {
+        if viewModel.isLoading && viewModel.comments.isEmpty {
+            loadingView()
+        } else if let errorMessage = viewModel.errorMessage,
+                  viewModel.comments.isEmpty {
+            errorView(message: errorMessage)
+        } else {
+            detailsListView()
+        }
+    }
+
+    private func loadingView() -> some View {
+        ProgressView("Loading comments...")
+    }
+
+    private func errorView(message: String) -> some View {
+        VStack(spacing: 12) {
+            Text(message)
+                .foregroundColor(.red)
+
+            Button("Retry") {
+                Task {
+                    await viewModel.loadComments()
+                }
+            }
+        }
+    }
+
+    private func detailsListView() -> some View {
+        List {
+            FeedCellView(item: viewModel.feedItem)
+
+            Section("Comments") {
+                ForEach(viewModel.comments) { comment in
+                    CommentCellView(comment: comment)
+                }
+            }
         }
     }
 }

@@ -18,35 +18,50 @@ struct FeedView: View {
     }
     
     var body: some View {
-        Group {
-            if viewModel.isLoading && viewModel.feedItems.isEmpty {
-                ProgressView("Loading...")
-            } else if let errorMessage = viewModel.errorMessage,
-                      viewModel.feedItems.isEmpty {
-                VStack(spacing: 12) {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                    
-                    Button("Retry") {
-                        Task {
-                            await viewModel.loadData()
-                        }
-                    }
-                }
-            } else {
-                List(viewModel.feedItems) { item in
-                    FeedCellView(item: item)
-                        .onTapGesture {
-                            onSelectItem(item)
-                        }
-                }
-            }
-        }
+        contentView()
         .task {
             await viewModel.loadData()
         }
         .refreshable {
             await viewModel.loadData()
+        }
+    }
+
+    @ViewBuilder
+    private func contentView() -> some View {
+        if viewModel.isLoading && viewModel.feedItems.isEmpty {
+            loadingView()
+        } else if let errorMessage = viewModel.errorMessage,
+                  viewModel.feedItems.isEmpty {
+            errorView(message: errorMessage)
+        } else {
+            feedListView()
+        }
+    }
+
+    private func loadingView() -> some View {
+        ProgressView("Loading...")
+    }
+
+    private func errorView(message: String) -> some View {
+        VStack(spacing: 12) {
+            Text(message)
+                .foregroundColor(.red)
+
+            Button("Retry") {
+                Task {
+                    await viewModel.loadData()
+                }
+            }
+        }
+    }
+
+    private func feedListView() -> some View {
+        List(viewModel.feedItems) { item in
+            FeedCellView(item: item)
+                .onTapGesture {
+                    onSelectItem(item)
+                }
         }
     }
 }
