@@ -10,4 +10,28 @@ import Combine
 
 final class DetailsViewModel: ObservableObject {
     
+    @Published var comments: [Comment] = []
+    @Published var errorMessage: String?
+    @Published var isLoading = false
+    
+    private let feedItem: FeedItem
+    private let apiClient: ApiClient
+    
+    init(feedItem: FeedItem, apiClient: ApiClient) {
+        self.feedItem = feedItem
+        self.apiClient = apiClient
+    }
+    
+    func loadComments() async {
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            comments = try await apiClient.fetchComments(for: feedItem.id)
+        } catch {
+            errorMessage = "Failed to load comments"
+        }
+        
+        isLoading = false
+    }
 }

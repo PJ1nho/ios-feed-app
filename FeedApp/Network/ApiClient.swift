@@ -24,8 +24,19 @@ final class ApiClient {
         return try JSONDecoder().decode([Post].self, from: posts)
     }
     
-    func fetchComments() async throws -> [Comment] {
-        guard let url = URL(string: ApiClient.commentsUrl) else { return [] }
+    func fetchComments(for postId: Int) async throws -> [Comment] {
+        guard var components = URLComponents(string: ApiClient.commentsUrl) else {
+            throw URLError(.badURL)
+        }
+        
+        components.queryItems = [
+            URLQueryItem(name: "postId", value: "\(postId)")
+        ]
+        
+        guard let url = components.url else {
+            throw URLError(.badURL)
+        }
+        
         let (comments, _) = try await URLSession.shared.data(from: url)
         return try JSONDecoder().decode([Comment].self, from: comments)
     }
