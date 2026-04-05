@@ -8,11 +8,39 @@
 import SwiftUI
 
 struct FeedView: View {
+    
+    @ObservedObject private var viewModel: FeedViewModel
+    
+    init(viewModel: FeedViewModel) {
+        self.viewModel = viewModel
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List(viewModel.feedItems) { item in
+            VStack(alignment: .leading, spacing: 8) {
+                Text(item.name)
+                    .font(.headline)
+                
+                Text("@\(item.username)")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+                Text(item.postTitle)
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                
+                Text(item.postBody)
+                    .font(.body)
+                    .foregroundColor(.primary)
+            }
+            .padding(.vertical, 8)
+        }
+        .task {
+            await viewModel.loadData()
+        }
     }
 }
 
 #Preview {
-    FeedView()
+    FeedView(viewModel: FeedViewModel())
 }
