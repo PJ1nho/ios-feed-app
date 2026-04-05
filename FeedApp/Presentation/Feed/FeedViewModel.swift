@@ -45,7 +45,7 @@ final class FeedViewModel: ObservableObject {
                 username: user?.username ?? "Unknown",
                 postTitle: post.title,
                 postBody: post.body,
-                imageURL: URL(string: "https://picsum.photos/300/200?random=\(post.id)")
+                imageURL: URL(string: "https://picsum.photos/seed/\(post.id)/300/200")
             )
         }
     }
