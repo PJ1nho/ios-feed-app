@@ -13,4 +13,5 @@ struct FeedItem: Identifiable {
     let username: String
     let postTitle: String
     let postBody: String
+    let imageURL: URL?
 }
