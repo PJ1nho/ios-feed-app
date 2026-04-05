@@ -44,7 +44,7 @@ struct FeedCellView: View {
                 image
                     .resizable()
                     .scaledToFit()
-                    .clipped()
+                    .cornerRadius(20)
             case .failure:
                 Color.gray
                     .frame(height: 200)
