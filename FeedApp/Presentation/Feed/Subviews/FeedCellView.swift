@@ -12,9 +12,7 @@ struct FeedCellView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if let imageURL = item.imageURL {
-                image(url: imageURL)
-            }
+            RemoteImageView(url: item.imageURL)
             
             Text(item.name)
                 .font(.headline)
@@ -32,27 +30,6 @@ struct FeedCellView: View {
                 .foregroundColor(.primary)
         }
         .padding(.vertical, 8)
-    }
-    
-    private func image(url: URL) -> some View {
-        AsyncImage(url: url) { phase in
-            switch phase {
-            case .empty:
-                ProgressView()
-                    .frame(height: 200)
-            case .success(let image):
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .cornerRadius(20)
-            case .failure:
-                Color.gray
-                    .frame(height: 200)
-            default:
-                EmptyView()
-            }
-        }
-        .frame(maxWidth: .infinity)
     }
 }
 
