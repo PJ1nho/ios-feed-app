@@ -16,6 +16,7 @@ final class FeedViewController: UIHostingController<FeedView> {
         super.init(
             rootView: FeedView(viewModel: viewModel, onSelectItem: onSelectItem)
         )
+        title = "Feed"
     }
 
     required init?(coder: NSCoder) {

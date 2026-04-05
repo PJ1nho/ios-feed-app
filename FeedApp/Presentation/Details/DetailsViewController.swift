@@ -16,6 +16,7 @@ class DetailsViewController: UIHostingController<DetailsView> {
         super.init(
             rootView: DetailsView(viewModel: viewModel)
         )
+        title = "Details"
     }
 
     required init?(coder: NSCoder) {
@@ -23,4 +24,3 @@ class DetailsViewController: UIHostingController<DetailsView> {
     }
 
 }
-

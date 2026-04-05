@@ -24,6 +24,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
+        configureNavigationBarAppearance()
         showFeed()
     }
     
@@ -43,5 +44,22 @@ final class AppCoordinator: Coordinator {
         let viewModel = DetailsViewModel(feedItem: item, apiClient: apiClient)
         let viewController = DetailsViewController(viewModel: viewModel)
         navigationController.pushViewController(viewController, animated: true)
+    }
+
+    private func configureNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.label
+        ]
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.label
+        ]
+
+        navigationController.navigationBar.standardAppearance = appearance
+        navigationController.navigationBar.scrollEdgeAppearance = appearance
+        navigationController.navigationBar.compactAppearance = appearance
+        navigationController.navigationBar.isTranslucent = false
     }
 }
