@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct DetailsView: View {
-    
+
+    // MARK: - Private Properties
+
     @ObservedObject private var viewModel: DetailsViewModel
-    
+
+    // MARK: - Init
+
     init(viewModel: DetailsViewModel) {
         self.viewModel = viewModel
     }
-    
+
+    // MARK: - Body
+
     var body: some View {
         contentView()
         .task {
@@ -24,6 +30,8 @@ struct DetailsView: View {
             await viewModel.loadComments()
         }
     }
+
+    // MARK: - Private Methods
 
     @ViewBuilder
     private func contentView() -> some View {

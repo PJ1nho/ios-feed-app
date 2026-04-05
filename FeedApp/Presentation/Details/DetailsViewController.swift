@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 class DetailsViewController: UIHostingController<DetailsView> {
-    
+
     // MARK: - Init
 
     init(viewModel: DetailsViewModel) {

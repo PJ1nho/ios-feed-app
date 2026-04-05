@@ -13,21 +13,32 @@ protocol Coordinator: AnyObject {
 }
 
 final class AppCoordinator: Coordinator {
+
+    // MARK: - Public Properties
+
     let navigationController: UINavigationController
-    
+
+    // MARK: - Private Properties
+
     private let apiClient: ApiClientProtocol
-    
+
+    // MARK: - Init
+
     init(navigationController: UINavigationController,
          apiClient: ApiClientProtocol = ApiClient()) {
         self.navigationController = navigationController
         self.apiClient = apiClient
     }
-    
+
+    // MARK: - Public Methods
+
     func start() {
         configureNavigationBarAppearance()
         showFeed()
     }
-    
+
+    // MARK: - Private Methods
+
     private func showFeed() {
         let viewModel = FeedViewModel(apiClient: apiClient)
 

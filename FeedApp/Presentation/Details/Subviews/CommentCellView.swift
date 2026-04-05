@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct CommentCellView: View {
+
+    // MARK: - Public Properties
+
     let comment: Comment
-    
+
+    // MARK: - Body
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(comment.name)

@@ -21,10 +21,15 @@ protocol ApiClientProtocol {
 }
 
 final class ApiClient {
+
+    // MARK: - Constants
+
     static let usersUrl = "https://jsonplaceholder.typicode.com/users"
     static let postsUrl = "https://jsonplaceholder.typicode.com/posts"
     static let commentsUrl = "https://jsonplaceholder.typicode.com/comments"
 }
+
+// MARK: - ApiClientProtocol
 
 extension ApiClient: ApiClientProtocol {
     func fetchUsers() async throws -> [User] {
@@ -57,6 +62,8 @@ extension ApiClient: ApiClientProtocol {
         return try await fetch([Comment].self, from: url)
     }
 }
+
+// MARK: - Private Extension
 
 private extension ApiClient {
     func fetch<T: Decodable>(_ type: T.Type, from url: URL) async throws -> T {

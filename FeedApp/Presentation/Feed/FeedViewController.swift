@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 final class FeedViewController: UIHostingController<FeedView> {
-    
+
     // MARK: - Init
 
     init(viewModel: FeedViewModel, onSelectItem: @escaping (FeedItem) -> Void) {

@@ -8,15 +8,21 @@
 import SwiftUI
 
 struct FeedView: View {
-    
+
+    // MARK: - Private Properties
+
     @ObservedObject private var viewModel: FeedViewModel
     private let onSelectItem: (FeedItem) -> Void
-    
+
+    // MARK: - Init
+
     init(viewModel: FeedViewModel, onSelectItem: @escaping (FeedItem) -> Void) {
         self.viewModel = viewModel
         self.onSelectItem = onSelectItem
     }
-    
+
+    // MARK: - Body
+
     var body: some View {
         contentView()
         .task {
@@ -26,6 +32,8 @@ struct FeedView: View {
             await viewModel.loadData()
         }
     }
+
+    // MARK: - Private Methods
 
     @ViewBuilder
     private func contentView() -> some View {

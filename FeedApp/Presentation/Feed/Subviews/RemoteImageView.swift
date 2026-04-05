@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct RemoteImageView: View {
+
+    // MARK: - Public Properties
+
     let url: URL?
-    
+
+    // MARK: - Private Properties
+
     @State private var image: UIImage?
     @State private var isLoading = false
-    
+
+    // MARK: - Body
+
     var body: some View {
         Group {
             if let image {
@@ -32,7 +39,9 @@ struct RemoteImageView: View {
             await loadImage()
         }
     }
-    
+
+    // MARK: - Private Methods
+
     private func loadImage() async {
         image = nil
         isLoading = true
