@@ -14,7 +14,7 @@ final class DetailsViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isLoading = false
     
-    private let feedItem: FeedItem
+    let feedItem: FeedItem
     private let apiClient: ApiClient
     
     init(feedItem: FeedItem, apiClient: ApiClient) {

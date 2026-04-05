@@ -8,11 +8,24 @@
 import SwiftUI
 
 struct CommentCellView: View {
+    let comment: Comment
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading, spacing: 8) {
+            Text(comment.name)
+                .font(.headline)
+            
+            Text(comment.email)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            Text(comment.body)
+                .font(.body)
+        }
+        .padding(.vertical, 8)
     }
 }
 
 #Preview {
-    CommentCellView()
+    CommentCellView(comment: Comment(postId: 123, id: 12, name: "qwe", email: "qwe", body: "qwe"))
 }
