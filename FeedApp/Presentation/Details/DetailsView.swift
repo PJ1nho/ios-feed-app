@@ -1,5 +1,5 @@
 //
-//  FeedView.swift
+//  DetailsView.swift
 //  FeedApp
 //
 //  Created by Тихтей  Павел on 05.04.2026.
@@ -7,18 +7,16 @@
 
 import SwiftUI
 
-struct FeedView: View {
+struct DetailsView: View {
 
     // MARK: - Private Properties
 
-    @ObservedObject private var viewModel: FeedViewModel
-    private let onSelectItem: (FeedItem) -> Void
+    @ObservedObject private var viewModel: DetailsViewModel
 
     // MARK: - Init
 
-    init(viewModel: FeedViewModel, onSelectItem: @escaping (FeedItem) -> Void) {
+    init(viewModel: DetailsViewModel) {
         self.viewModel = viewModel
-        self.onSelectItem = onSelectItem
     }
 
     // MARK: - Body
@@ -26,10 +24,10 @@ struct FeedView: View {
     var body: some View {
         contentView()
         .task {
-            await viewModel.loadData()
+            await viewModel.loadComments()
         }
         .refreshable {
-            await viewModel.loadData()
+            await viewModel.loadComments()
         }
     }
 
@@ -37,18 +35,18 @@ struct FeedView: View {
 
     @ViewBuilder
     private func contentView() -> some View {
-        if viewModel.isLoading && viewModel.feedItems.isEmpty {
+        if viewModel.isLoading && viewModel.comments.isEmpty {
             loadingView()
         } else if let errorMessage = viewModel.errorMessage,
-                  viewModel.feedItems.isEmpty {
+                  viewModel.comments.isEmpty {
             errorView(message: errorMessage)
         } else {
-            feedListView()
+            detailsListView()
         }
     }
 
     private func loadingView() -> some View {
-        ProgressView("Loading...")
+        ProgressView("Loading comments...")
     }
 
     private func errorView(message: String) -> some View {
@@ -58,22 +56,25 @@ struct FeedView: View {
 
             Button("Retry") {
                 Task {
-                    await viewModel.loadData()
+                    await viewModel.loadComments()
                 }
             }
         }
     }
 
-    private func feedListView() -> some View {
-        List(viewModel.feedItems) { item in
-            FeedCellView(item: item)
-                .onTapGesture {
-                    onSelectItem(item)
+    private func detailsListView() -> some View {
+        List {
+            FeedCellView(item: viewModel.feedItem)
+
+            Section("Comments") {
+                ForEach(viewModel.comments) { comment in
+                    CommentCellView(comment: comment)
                 }
+            }
         }
     }
 }
 
 #Preview {
-    FeedView(viewModel: FeedViewModel(apiClient: ApiClient()), onSelectItem: { _ in })
+    DetailsView(viewModel: DetailsViewModel(feedItem: FeedItem(id: 123, name: "qwe", username: "qwe", postTitle: "qwe", postBody: "qwe", imageURL: nil), apiClient: ApiClient()))
 }

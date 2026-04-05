@@ -9,13 +9,14 @@ import UIKit
 import SwiftUI
 
 final class FeedViewController: UIHostingController<FeedView> {
-    
+
     // MARK: - Init
 
-    init(viewModel: FeedViewModel) {
+    init(viewModel: FeedViewModel, onSelectItem: @escaping (FeedItem) -> Void) {
         super.init(
-            rootView: FeedView(viewModel: viewModel)
+            rootView: FeedView(viewModel: viewModel, onSelectItem: onSelectItem)
         )
+        title = "Feed"
     }
 
     required init?(coder: NSCoder) {

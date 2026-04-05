@@ -10,19 +10,25 @@ import Combine
 
 @MainActor
 final class FeedViewModel: ObservableObject {
-    
+
+    // MARK: - Published Properties
+
     @Published var feedItems: [FeedItem] = []
     @Published var errorMessage: String?
     @Published var isLoading = false
-    
-    var onSelectItem: ((FeedItem) -> Void)?
-    
-    private let apiClient: ApiClient
-    
-    init(apiClient: ApiClient) {
+
+    // MARK: - Private Properties
+
+    private let apiClient: ApiClientProtocol
+
+    // MARK: - Init
+
+    init(apiClient: ApiClientProtocol) {
         self.apiClient = apiClient
     }
-    
+
+    // MARK: - Public Methods
+
     func loadData() async {
         isLoading = true
         errorMessage = nil
@@ -39,7 +45,9 @@ final class FeedViewModel: ObservableObject {
         
         isLoading = false
     }
-    
+
+    // MARK: - Private Methods
+
     private func mapFeedItems(posts: [Post], users: [User]) -> [FeedItem] {
         let usersById = Dictionary(uniqueKeysWithValues: users.map { ($0.id, $0) })
         

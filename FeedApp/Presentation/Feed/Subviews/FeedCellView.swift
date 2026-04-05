@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct FeedCellView: View {
+
+    // MARK: - Public Properties
+
     let item: FeedItem
-    
+
+    // MARK: - Body
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             RemoteImageView(url: item.imageURL)
