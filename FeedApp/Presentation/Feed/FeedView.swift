@@ -17,23 +17,7 @@ struct FeedView: View {
     
     var body: some View {
         List(viewModel.feedItems) { item in
-            VStack(alignment: .leading, spacing: 8) {
-                Text(item.name)
-                    .font(.headline)
-                
-                Text("@\(item.username)")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                
-                Text(item.postTitle)
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                
-                Text(item.postBody)
-                    .font(.body)
-                    .foregroundColor(.primary)
-            }
-            .padding(.vertical, 8)
+            FeedCellView(item: item)
         }
         .task {
             await viewModel.loadData()
