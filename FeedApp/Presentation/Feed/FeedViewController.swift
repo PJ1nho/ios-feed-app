@@ -6,13 +6,20 @@
 //
 
 import UIKit
+import SwiftUI
 
-class FeedViewController: UIViewController {
+final class FeedViewController: UIHostingController<FeedView> {
+    
+    // MARK: - Init
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    init(viewModel: FeedViewModel) {
+        super.init(
+            rootView: FeedView(viewModel: viewModel)
+        )
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
 }
-
