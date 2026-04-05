@@ -34,15 +34,21 @@ struct FeedView: View {
             } else {
                 List(viewModel.feedItems) { item in
                     FeedCellView(item: item)
+                        .onTapGesture {
+                            viewModel.onSelectItem?(item)
+                        }
                 }
             }
         }
         .task {
             await viewModel.loadData()
         }
+        .refreshable {
+            await viewModel.loadData()
+        }
     }
 }
 
 #Preview {
-    FeedView(viewModel: FeedViewModel())
+    FeedView(viewModel: FeedViewModel(apiClient: ApiClient()))
 }

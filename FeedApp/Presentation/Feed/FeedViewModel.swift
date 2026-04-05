@@ -8,13 +8,20 @@
 import SwiftUI
 import Combine
 
+@MainActor
 final class FeedViewModel: ObservableObject {
     
     @Published var feedItems: [FeedItem] = []
     @Published var errorMessage: String?
     @Published var isLoading = false
     
-    let apiClient = ApiClient()
+    var onSelectItem: ((FeedItem) -> Void)?
+    
+    private let apiClient: ApiClient
+    
+    init(apiClient: ApiClient) {
+        self.apiClient = apiClient
+    }
     
     func loadData() async {
         isLoading = true
